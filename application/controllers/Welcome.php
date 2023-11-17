@@ -458,7 +458,7 @@ class Welcome extends CI_Controller
 				$batting['runs'] = $value['runs'];
 				$batting['bowls'] = $bowls;
 				$batting['outs'] = $value['in_out'];
-				$batting['average'] = round($average_2,2);
+				$batting['average'] = round($average_2, 2);
 				$batting['performanceruns5'] = $value['runs'];
 				$this->db->insert('battingleaderboard', $batting);
 			}
@@ -478,8 +478,8 @@ class Welcome extends CI_Controller
 				$overs_bowled = $bowlingValue['oversbowled'] + $value['overs_bowled'];
 
 				$bowls = $value['overs_bowled'] * 6;
-				$averages = $wickets >0 ? $runs/$wickets : 0;
-				$economy = $overs_bowled >0 ? $runs/$overs_bowled : 0;
+				$averages = $wickets > 0 ? $runs / $wickets : 0;
+				$economy = $overs_bowled > 0 ? $runs / $overs_bowled : 0;
 
 				$updated = true;
 				$bowling['player_id'] = $value['player_id'];
@@ -487,11 +487,11 @@ class Welcome extends CI_Controller
 				$bowling['player_name'] = $value['player_name'];
 				$bowling['matches'] = $bowlingValue['matches'] + 1;
 				$bowling['oversbowled'] = $overs_bowled;
-				$bowling['bowls'] =  $bowlingValue['bowls']  +  $bowls;
+				$bowling['bowls'] = $bowlingValue['bowls'] + $bowls;
 				$bowling['runsgiven'] = $bowlingValue['runsgiven'] + $value['runs_given'];
 				$bowling['wicketstaken'] = $wickets;
-				$bowling['economy'] = round($economy,2);
-				$bowling['average'] = round($averages,2);
+				$bowling['economy'] = round($economy, 2);
+				$bowling['average'] = round($averages, 2);
 				$bowling['performancewickets5'] = $value['wickets_taken'];
 				$bowling['performancewickets4'] = $bowlingValue['performancewickets5'];
 				$bowling['performancewickets3'] = $bowlingValue['performancewickets4'];
@@ -504,8 +504,8 @@ class Welcome extends CI_Controller
 
 			if (!$updated) {
 				$bowls = $value['overs_bowled'] * 6;
-				$averages = $value['wickets_taken'] >0 ? $value['runs_given']/$value['wickets_taken'] : 0;
-				$economy = $value['overs_bowled'] > 0 ? $value['runs_given']/$value['overs_bowled'] : 0;
+				$averages = $value['wickets_taken'] > 0 ? $value['runs_given'] / $value['wickets_taken'] : 0;
+				$economy = $value['overs_bowled'] > 0 ? $value['runs_given'] / $value['overs_bowled'] : 0;
 
 				$bowling['player_id'] = $value['player_id'];
 				$bowling['match_id'] = $matchID;
@@ -515,8 +515,8 @@ class Welcome extends CI_Controller
 				$bowling['bowls'] = $bowls;
 				$bowling['runsgiven'] = $value['runs_given'];
 				$bowling['wicketstaken'] = $value['wickets_taken'];
-				$bowling['economy'] = round($economy,2);
-				$bowling['average'] = round($averages,2);
+				$bowling['economy'] = round($economy, 2);
+				$bowling['average'] = round($averages, 2);
 				$bowling['performancewickets5'] = $value['wickets_taken'];
 
 				$this->db->insert('bowlingreport', $bowling);
@@ -1079,55 +1079,60 @@ class Welcome extends CI_Controller
 			$htmlContent = '<html><body><h5>You have successfully created a club. Kindly login with the password <b>' . $password . '</b> </h5></body></html>';
 
 
-			// Prepare cURL request
-			$headers = array(
-				'Content-Type: application/json',
-				'Authorization: Bearer ' . $apiKey
-			);
+			if (true) {
+				//working gmail code
+				$this->sendGmail($email, $subject, $htmlContent);
+			} else {
+				// Prepare cURL request
+				$headers = array(
+					'Content-Type: application/json',
+					'Authorization: Bearer ' . $apiKey
+				);
 
-			$data = array(
-				'personalizations' => array(
-					array(
-						'to' => array(
-							array(
-								'email' => $toEmail,
-								'name' => $toName
+				$data = array(
+					'personalizations' => array(
+						array(
+							'to' => array(
+								array(
+									'email' => $toEmail,
+									'name' => $toName
+								)
 							)
 						)
+					),
+					'from' => array(
+						'email' => $fromEmail,
+						'name' => $fromName
+					),
+					'subject' => $subject,
+					'content' => array(
+						array(
+							'type' => 'text/html',
+							'value' => $htmlContent
+						)
 					)
-				),
-				'from' => array(
-					'email' => $fromEmail,
-					'name' => $fromName
-				),
-				'subject' => $subject,
-				'content' => array(
-					array(
-						'type' => 'text/html',
-						'value' => $htmlContent
-					)
-				)
-			);
+				);
 
-			$ch = curl_init($sendGridApiUrl);
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+				$ch = curl_init($sendGridApiUrl);
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+				curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-			// Execute cURL request
-			$response = curl_exec($ch);
-			$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				// Execute cURL request
+				$response = curl_exec($ch);
+				$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-			// Check if the email was sent successfully
-			if ($httpCode == 202) {
-				echo 'Email sent successfully!';
-			} else {
-				log_message('error', 'Failed to send email. HTTP Code: ' . $httpCode . ', Response: ' . $response);
+				// Check if the email was sent successfully
+				if ($httpCode == 202) {
+					echo 'Email sent successfully!';
+				} else {
+					log_message('error', 'Failed to send email. HTTP Code: ' . $httpCode . ', Response: ' . $response);
+				}
+
+				// Close cURL session
+				curl_close($ch);
 			}
-
-			// Close cURL session
-			curl_close($ch);
 
 			// Check if the insertion was successful
 			if ($this->db->affected_rows() > 0) {
@@ -1140,6 +1145,33 @@ class Welcome extends CI_Controller
 				redirect('Welcome/create_club', 'refresh');
 			}
 		}
+	}
+
+	public function sendGmail($email, $subject, $message)
+	{
+		$config = array(
+			'protocol' => 'smtp',
+			'smtp_host' => 'ssl://smtp.gmail.com',
+			'smtp_port' => 465,
+			'smtp_user' => 'simonmakuno2015@gmail.com',
+			'smtp_pass' => 'rgcppzifqrmnevnx',
+			'mailtype' => 'html',
+			'charset' => 'iso-8859-1'
+		);
+		$this->load->library('email', $config);
+		$this->load->library('parser');
+
+		$this->email->initialize($config);
+		$this->email->set_newline("\r\n");
+		$fromEmail = 'info@suq.world';
+		$fromName = 'Cricket System';
+
+		$this->email->from($fromEmail, $fromName);
+		$this->email->to($email);
+
+		$this->email->subject($subject);
+		$this->email->message($message);
+		$result = $this->email->send();
 	}
 
 	/**
