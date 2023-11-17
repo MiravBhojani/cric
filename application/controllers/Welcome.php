@@ -1123,7 +1123,7 @@ class Welcome extends CI_Controller
 			if ($httpCode == 202) {
 				echo 'Email sent successfully!';
 			} else {
-				echo 'Failed to send email. HTTP Code: ' . $httpCode . ', Response: ' . $response;
+				log_message('error', 'Failed to send email. HTTP Code: ' . $httpCode . ', Response: ' . $response);
 			}
 
 			// Close cURL session
