@@ -14,6 +14,9 @@ if ($is_admin) {
 				<h3>Current Players</h3>
 			</div>
 			<div class="card-body">
+				<a href="<?php echo base_url('Welcome/exportPlayers'); ?>" class="btn btn-primary">Export Data</a>
+				<hr/>
+
 				<div class="table-responsive">
 					<table class="table table-striped table-hover">
 						<thead>
@@ -44,11 +47,4 @@ if ($is_admin) {
 			</div>
 		</div>
 </main>
-
-<footer class="footer mt-auto py-3 bg-light">
-	<div class="container">
-		<span class="text-muted">Cricket Machine Learning Project. &copy; 2023</span>
-	</div>
-</footer>
-
 <?php include 'club_footer.php'?>

@@ -14,6 +14,9 @@ if ($is_admin) {
 				<h3>Matches</h3>
 			</div>
 			<div class="card-body">
+				<a href="<?php echo base_url('Welcome/exportMatches'); ?>" class="btn btn-primary">Export Data</a>
+				<hr/>
+
 				<div class="table-responsive">
 					<table class="table table-striped table-hover">
 						<thead>
@@ -39,11 +42,15 @@ if ($is_admin) {
 								<?php if (!$is_admin) { ?>
 									<td>
 										<?php if ($match['completed'] == '0') { ?>
-										<a href="<?= base_url('Welcome/s1/' . $match['match_id']) ?>"
-										   class="btn btn-primary">Edit</a>
-										   <?php }else { ?>
-										   <span class="badge bg-success">Completed</span>
-										   <?php } ?>
+											<?php if ($match['ht_id'] == $club_id) { ?>
+												<a href="<?= base_url('Welcome/s1/' . $match['match_id']) ?>"
+												   class="btn btn-primary">Edit</a>
+											<?php } else { ?>
+												<span class="badge bg-warning text-black-50">Pending ...</span>
+											<?php } ?>
+										<?php } else { ?>
+											<span class="badge bg-success">Completed</span>
+										<?php } ?>
 									</td>
 								<?php } ?>
 							</tr>

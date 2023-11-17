@@ -86,7 +86,7 @@ class Welcome extends CI_Controller
 
 	}
 
-	public function exportCSV()
+	public function exportCSV($file_name)
 	{
 		// Load data from the BattingLeaderboard table
 		$battingData = $this->db->get('battingleaderboard')->result_array();
@@ -128,6 +128,75 @@ class Welcome extends CI_Controller
 		header('Content-Type: text/csv');
 		header('Content-Disposition: attachment; filename="' . $bowlingFileName . '"');
 		echo $bowlingCsvContent;
+
+		// Terminate script execution after sending the file
+		exit();
+	}
+
+	public function exportPlayers()
+	{
+		// Load data from the BowlingReport table
+		$players = $this->db->select('*')
+			->from('players');
+
+		if (!$this->is_admin) {
+			$players = $players->where("club_id = $this->club_id");
+		}
+
+		$players = $players->get()->result_array();
+
+		// Create CSV content for BowlingReport
+		$playersContent = $this->arrayToCsv($players);
+
+		// Set the file name for BowlingReport
+		$bowlingFileName = 'players_report.csv';
+
+		// Send BowlingReport CSV file to the browser
+		header('Content-Type: text/csv');
+		header('Content-Disposition: attachment; filename="' . $bowlingFileName . '"');
+		echo $playersContent;
+
+		// Terminate script execution after sending the file
+		exit();
+	}
+
+
+	public function exportClubs()
+	{
+		// Load data from the BowlingReport table
+		$players = $this->db->get('clubs')->result_array();
+
+		// Create CSV content for BowlingReport
+		$playersContent = $this->arrayToCsv($players);
+
+		// Set the file name for BowlingReport
+		$bowlingFileName = 'clubs_report.csv';
+
+		// Send BowlingReport CSV file to the browser
+		header('Content-Type: text/csv');
+		header('Content-Disposition: attachment; filename="' . $bowlingFileName . '"');
+		echo $playersContent;
+
+		// Terminate script execution after sending the file
+		exit();
+	}
+
+
+	public function exportMatches()
+	{
+		// Load data from the BowlingReport table
+		$players = $this->db->get('matches')->result_array();
+
+		// Create CSV content for BowlingReport
+		$playersContent = $this->arrayToCsv($players);
+
+		// Set the file name for BowlingReport
+		$bowlingFileName = 'matches_report.csv';
+
+		// Send BowlingReport CSV file to the browser
+		header('Content-Type: text/csv');
+		header('Content-Disposition: attachment; filename="' . $bowlingFileName . '"');
+		echo $playersContent;
 
 		// Terminate script execution after sending the file
 		exit();
@@ -226,6 +295,7 @@ class Welcome extends CI_Controller
 		$result = $result->get()->result_array();
 
 		$data['matches'] = $result;
+		$data['club_id'] = $this->club_id;
 		$this->load->view('matches_list', $data);
 	}
 
@@ -344,11 +414,11 @@ class Welcome extends CI_Controller
 				$wickets = $battingValue['wickets_taken'] + $value['wickets_taken'];
 				$overs_bowled = $battingValue['overs_bowled'] + $value['overs_bowled'];
 				$matches = $battingValue['matches'] + 1;
+				$outs = $battingValue['outs'] + $value['in_out'];
 
-				$bowls = $value['overs_bowled'] * 6;
-				$averages = $wickets >0 ? $runs/$wickets : 0;
-				$average_2 = $matches >0 ? $runs/$matches : 0;
-				$economy = $overs_bowled >0 ? $runs/$overs_bowled : 0;
+				$bowls = $battingValue['bowls'] + $value['balls_faced'];
+				$averages = $wickets > 0 ? $runs / $wickets : 0;
+				$average_2 = $matches > 0 ? $runs / $outs : 0;
 
 				$updated = true;
 				$batting['wickets_taken'] = $wickets;
@@ -358,9 +428,9 @@ class Welcome extends CI_Controller
 				$batting['player_name'] = $battingValue['player_name'];
 				$batting['matches'] = $matches;
 				$batting['runs'] = $runs;
-				$batting['bowls'] = $battingValue['bowls'] + $bowls;
-				$batting['outs'] = $battingValue['outs'] + $value['in_out'];
-				$batting['average'] = round($average_2,2);
+				$batting['bowls'] = $bowls;
+				$batting['outs'] = $outs;
+				$batting['average'] = round($average_2, 2);
 				$batting['performanceruns5'] = $value['runs'];
 				$batting['performanceruns4'] = $battingValue['performanceruns5'];
 				$batting['performanceruns3'] = $battingValue['performanceruns4'];
@@ -375,8 +445,8 @@ class Welcome extends CI_Controller
 				$runs = $value['runs'];
 				$wickets = $value['wickets_taken'];
 
-				$bowls = $value['overs_bowled'] * 6;
-				$averages = $wickets >0 ? $runs/$wickets : 0;
+				$bowls = $value['balls_faced'];
+				$averages = $wickets > 0 ? $runs / $wickets : 0;
 				$average_2 = $runs;
 
 				$batting['wickets_taken'] = $value['wickets_taken'];
@@ -475,7 +545,8 @@ class Welcome extends CI_Controller
 			// redirect them to the login page
 			redirect('auth/login', 'refresh');
 		}
-		$this->load->view('club_admin');
+		$data['club_name'] = $this->getClubName();
+		$this->load->view('club_admin', $data);
 	}
 
 	public function create_player()
@@ -631,6 +702,24 @@ class Welcome extends CI_Controller
 			return $item['id'];
 		}
 		return 0;
+	}
+
+
+	/**
+	 * @return mixed|void
+	 */
+	public function getClubName()
+	{
+		$club = $this->db->select('*')
+			->from('clubs')
+			->where("userid = $this->auth_user_id")
+			->get()
+			->result_array();
+
+		foreach ($club as $item) {
+			return ucwords(strtolower($item['clubname']) . " club");
+		}
+		return "Club Admin";
 	}
 
 	/**

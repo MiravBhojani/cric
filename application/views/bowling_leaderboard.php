@@ -15,7 +15,7 @@ if ($is_admin) {
 			</div>
 			<div class="card-body">
 				<a href="<?php echo base_url('Welcome/leaderboard'); ?>" class="btn btn-success">Leaderboard Menu</a>
-				<a href="<?php echo base_url('Welcome/exportCSV'); ?>" class="btn btn-primary">Export Data</a>
+				<a href="<?php echo base_url('Welcome/bexportCSV'); ?>" class="btn btn-primary">Export Data</a>
 				<hr/>
 				<div class="table-responsive">
 					<table class="table table-striped table-bordered">

@@ -14,6 +14,9 @@ if ($is_admin) {
 				<h3>Clubs</h3>
 			</div>
 			<div class="card-body">
+				<a href="<?php echo base_url('Welcome/exportClubs'); ?>" class="btn btn-primary">Export Data</a>
+				<hr/>
+
 				<div class="table-responsive">
 					<table class="table table-striped table-hover">
 						<thead>
