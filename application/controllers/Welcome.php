@@ -427,7 +427,7 @@ class Welcome extends CI_Controller
 
 				$bowls = $battingValue['bowls'] + $value['balls_faced'];
 				$averages = $wickets > 0 ? $runs / $wickets : 0;
-				$average_2 = $matches > 0 ? $runs / $outs : 0;
+				$average_2 = $outs > 0 ? $runs / $outs : 0;
 
 				$updated = true;
 				$batting['wickets_taken'] = $wickets;
@@ -1077,6 +1077,18 @@ class Welcome extends CI_Controller
 
 			redirect('Welcome/clubs', 'refresh');
 		} else {
+
+			// Form validation passed, create user
+			$password = 'clubpassword';
+
+			$additional_data = array(
+				'username' => $email, // You can customize this field as needed
+			);
+
+			$this->ion_auth->register($email, $password, $email, $additional_data);
+
+			$userId = $this->getUserID($email);
+
 			// Club doesn't exist, proceed to insert into the database
 			$data = array(
 				'clubname' => $clubName,
@@ -1104,14 +1116,6 @@ class Welcome extends CI_Controller
 			$toEmail = $email;
 			$toName = 'Mirav';
 
-// Form validation passed, create user
-			$password = 'clubpassword';
-
-			$additional_data = array(
-				'username' => $email, // You can customize this field as needed
-			);
-
-			$this->ion_auth->register($email, $password, $email, $additional_data);
 
 			// Email subject
 			$subject = 'Welcome To Your Club';
