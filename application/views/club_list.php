@@ -25,6 +25,7 @@ if ($is_admin) {
 							<th>Name</th>
 							<th>Email</th>
 							<th>Home Ground</th>
+							<th></th>
 						</tr>
 						</thead>
 						<tbody>
@@ -34,6 +35,10 @@ if ($is_admin) {
 								<td><?= $club['clubname'] ?></td>
 								<td><?= $club['email'] ?></td>
 								<td><?= $club['homeground'] ?></td>
+								<td>
+									<a href="<?= base_url('Welcome/create_club/' . $club['id']); ?>"
+									   class="btn btn-sm btn-primary">Edit</a>
+								</td>
 							</tr>
 						<?php } ?>
 						</tbody>

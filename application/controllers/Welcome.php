@@ -62,11 +62,20 @@ class Welcome extends CI_Controller
 		$this->load->view('admin');
 	}
 
-	public function create_club()
+	public function create_club($type)
 	{
 		if (!$this->ion_auth->logged_in()) {
 			// redirect them to the login page
 			redirect('auth/login', 'refresh');
+		}
+
+		if (is_numeric($type)) {
+			$club = $this->db->select('*')
+				->from('clubs')
+				->where("id = $type")
+				->get()->first_row();
+
+			$data['club'] = $club;
 		}
 
 		$data['is_admin'] = $this->is_admin;
@@ -549,11 +558,20 @@ class Welcome extends CI_Controller
 		$this->load->view('club_admin', $data);
 	}
 
-	public function create_player()
+	public function create_player($type)
 	{
 		if (!$this->ion_auth->logged_in()) {
 			// redirect them to the login page
 			redirect('auth/login', 'refresh');
+		}
+
+		// Check if the club already exists
+		if (is_numeric($type)) {
+			$players = $this->db->select('*')
+				->from('players')
+				->where("id = $type")
+				->get()->first_row();
+			$data['player'] = $players;
 		}
 
 		$clubs = $this->db->select("*")
@@ -580,6 +598,7 @@ class Welcome extends CI_Controller
 
 			// Get form input data
 			$name = $this->input->post('name');
+			$type = $this->input->post('type');
 			$club_id = $this->input->post('club_id');
 			$dob = $this->input->post('dob');
 			$battingStyle = $this->input->post('battingStyle');
@@ -597,8 +616,14 @@ class Welcome extends CI_Controller
 				'lastupdated' => $lastUpdated
 			);
 
-			// Assuming 'players' is the table name, adjust as per your database schema
-			$this->db->insert('players', $data);
+			if (is_numeric($type)) {
+				$this->db->where("id = $type");
+				$this->db->update('players', $data);
+				redirect('Welcome/players', 'refresh');
+			} else {
+				// Assuming 'players' is the table name, adjust as per your database schema
+				$this->db->insert('players', $data);
+			}
 
 			if ($this->db->affected_rows() > 0) {
 				// Insertion successful
@@ -626,7 +651,7 @@ class Welcome extends CI_Controller
 		$clubID = $this->getClubID();
 
 		// Fetch players' data from the 'players' table
-		$result = $this->db->select('player.name,player.dob,player.batting_style,player.bowling_style,club.clubname as club_name')
+		$result = $this->db->select('player.id,player.name,player.dob,player.batting_style,player.bowling_style,club.clubname as club_name')
 			->from('players as player')
 			->join('clubs as club', 'player.club_id = club.id');
 
@@ -1027,14 +1052,30 @@ class Welcome extends CI_Controller
 		$clubName = $this->input->post('clubName');
 		$email = $this->input->post('email');
 		$homeGround = $this->input->post('homeGround');
+		$type = $this->input->post('type');
 		$userId = $this->getUserID($email);
 
 		// Check if the club already exists
-		$existingClub = $this->db->get_where('clubs', array('clubname' => $clubName))->row();
+		if (is_numeric($type)) {
+			$existingClub = $this->db->select('*')
+				->from('clubs')
+				->where("id = $type")
+				->get()->first_row();
+		}
 
 		if ($existingClub) {
-			// Club with the given name already exists
-			echo 'Club exists';
+			$insert = [
+				'clubname' => $clubName,
+				'email' => $email,
+				'homeground' => $homeGround,
+				'userid' => $userId,
+				'lastupdated' => date('Y-m-d H:i:s')
+			];
+
+			$this->db->where("id = $type");
+			$this->db->update('clubs', $insert);
+
+			redirect('Welcome/clubs', 'refresh');
 		} else {
 			// Club doesn't exist, proceed to insert into the database
 			$data = array(
@@ -1142,7 +1183,7 @@ class Welcome extends CI_Controller
 			} else {
 				echo 'Failed to insert club';
 				// Redirect to 'Welcome/admin' after successful insertion
-				redirect('Welcome/create_club', 'refresh');
+				redirect('Welcome/create_club/create', 'refresh');
 			}
 		}
 	}

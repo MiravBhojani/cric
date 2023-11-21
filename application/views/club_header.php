@@ -49,7 +49,8 @@
 						   href="<?php echo base_url('Welcome/club_admin'); ?>">Home</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="<?php echo base_url('Welcome/create_player'); ?>">Add New Player</a>
+						<a class="nav-link" href="<?php echo base_url('Welcome/create_player/create'); ?>">Add New
+							Player</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="<?php echo base_url('Welcome/players'); ?>">Players</a>

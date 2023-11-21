@@ -27,6 +27,7 @@ if ($is_admin) {
 							<th>Date of Birth</th>
 							<th>Batting Style</th>
 							<th>Bowling Style</th>
+							<th></th>
 						</tr>
 						</thead>
 						<tbody>
@@ -39,6 +40,10 @@ if ($is_admin) {
 								<td><?= date('F j, Y', strtotime($player['dob'])) ?></td>
 								<td><?= $player['batting_style'] ?></td>
 								<td><?= $player['bowling_style'] ?></td>
+								<td>
+									<a href="<?= base_url('Welcome/create_player/' . $player['id']); ?>"
+									   class="btn btn-sm btn-primary">Edit</a>
+								</td>
 							</tr>
 						<?php endforeach; ?>
 						</tbody>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2023 at 06:43 PM
+-- Generation Time: Nov 21, 2023 at 06:44 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -88,18 +88,6 @@ CREATE TABLE `clubs` (
   `lastupdated` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
---
--- Dumping data for table `clubs`
---
-
-INSERT INTO `clubs` (`id`, `clubname`, `email`, `homeground`, `userid`, `lastupdated`) VALUES
-(1, 'nairobi', 'info@nairobi.co.ke', 'gymkhana nairobi', '2', '2023-11-06 08:54:07'),
-(2, 'mombasa', 'info@mombasa.com', 'mombasa', '1', '2023-11-06 08:56:03'),
-(3, 'Kanbis', 'miravbhojani@gmail.com', 'Eastleigh', '1', '2023-11-07 05:49:30'),
-(4, 'Swamibapa', 'mirav.bhojani@strathmore.edu', 'Jamhuri', '1', '2023-11-10 10:15:12'),
-(5, 'Simba Union', 'makuno.biz@gmail.com', 'Sikh Union', '1', '2023-11-16 12:57:00'),
-(6, 'Kabarage', 'makuno.biz@gmail.com', 'Hapa kule', '3', '2023-11-16 18:39:31');
-
 -- --------------------------------------------------------
 
 --
@@ -127,12 +115,21 @@ INSERT INTO `groups` (`id`, `name`, `description`) VALUES
 -- Table structure for table `login_attempts`
 --
 
-CREATE TABLE `login_attempts` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `ip_address` varchar(45) NOT NULL,
-  `login` varchar(100) NOT NULL,
-  `time` int(11) UNSIGNED DEFAULT NULL
+CREATE TABLE `login_attempts`
+(
+	`id`         int(11) UNSIGNED NOT NULL,
+	`ip_address` varchar(45)  NOT NULL,
+	`login`      varchar(100) NOT NULL,
+	`time`       int(11) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `login_attempts`
+--
+
+INSERT INTO `login_attempts` (`id`, `ip_address`, `login`, `time`)
+VALUES (7, '::1', 'makuno.biz@gmail.com', 1700545408),
+	   (8, '::1', 'mirav.bhojani@strathmore.edu', 1700545413);
 
 -- --------------------------------------------------------
 
@@ -140,9 +137,10 @@ CREATE TABLE `login_attempts` (
 -- Table structure for table `matches`
 --
 
-CREATE TABLE `matches` (
-  `id` int(11) NOT NULL,
-  `hometeam` int(11) DEFAULT NULL,
+CREATE TABLE `matches`
+(
+	`id`        int(11) NOT NULL,
+	`hometeam`  int(11) DEFAULT NULL,
   `awayteam` int(11) DEFAULT NULL,
   `dateplayed` varchar(300) NOT NULL,
   `homeground` varchar(300) NOT NULL,
@@ -150,16 +148,6 @@ CREATE TABLE `matches` (
   `completed` int(11) NOT NULL DEFAULT 0,
   `lastupdated` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data for table `matches`
---
-
-INSERT INTO `matches` (`id`, `hometeam`, `awayteam`, `dateplayed`, `homeground`, `userid`, `completed`, `lastupdated`) VALUES
-(10, 1, 2, '2023-11-16', 'gymkhana nairobi', '1', 1, '2023-11-15 11:13:26'),
-(11, 2, 1, '2023-11-30', 'mombasa', '1', 1, '2023-11-16 09:55:52'),
-(12, 5, 3, '2023-11-22', 'Sikh Union', '1', 0, '2023-11-16 13:01:52'),
-(13, 4, 3, '2023-11-21', 'Jamhuri', '1', 0, '2023-11-16 13:02:58');
 
 -- --------------------------------------------------------
 
@@ -202,35 +190,6 @@ CREATE TABLE `players` (
   `userid` varchar(300) NOT NULL,
   `lastupdated` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data for table `players`
---
-
-INSERT INTO `players` (`id`, `club_id`, `name`, `dob`, `batting_style`, `bowling_style`, `userid`, `lastupdated`) VALUES
-(1, 2, 'ed', '2023-11-16', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(2, 2, 'Aarav Sharma', '1995-01-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(3, 2, 'Ishaan Patel', '1994-02-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(4, 2, 'Aahana Singh', '1993-03-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(5, 2, 'Siya Reddy', '1992-04-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(6, 2, 'Aaradhya Kumar', '1991-05-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(7, 2, 'Virat Chauhan', '1980-12-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(8, 2, 'Riya Gupta', '1990-06-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(9, 2, 'Advait Dubey', '1998-07-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(10, 2, 'Aditi Mishra', '1999-08-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(11, 2, 'Anaya Basu', '2002-09-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(12, 1, 'Arnav Iyer', '2005-10-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(13, 1, 'Amita Menon', '1993-11-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(14, 1, 'Amita Menon', '1993-11-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(15, 1, 'Ishika Khanna', '2003-01-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(16, 1, 'Vihaan Ahuja', '2000-02-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(17, 1, 'Kavya Nair', '2006-03-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(18, 1, 'Arjun Verma', '1998-04-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(19, 1, 'Meera Singh', '2007-05-01', 'Right Hand Batting', 'Right Arm Off-Spin', '1', '2023-11-06 10:07:10'),
-(20, 1, 'Jignesh Hirani', '1993-06-15', 'Right Hand Batting', 'Left Arm Orthodox', '1', '2023-11-07 06:28:21'),
-(21, 1, 'Bhavesh Varsani', '2004-05-19', 'Right Hand Batting', 'Left Arm Chinaman', '1', '2023-11-10 11:00:04'),
-(22, 1, 'Simon Njenga', '2023-11-15', 'Right Hand Batting', 'Left Arm Orthodox', '2', '2023-11-15 09:06:58'),
-(23, 4, 'Mirav Bhojani', '2013-06-12', 'Right Hand Batting', 'Right Arm Off-Spin', '2', '2023-11-16 13:04:04');
 
 -- --------------------------------------------------------
 
@@ -289,35 +248,38 @@ CREATE TABLE `s4` (
 --
 
 CREATE TABLE `users` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `ip_address` varchar(45) NOT NULL,
-  `username` varchar(100) DEFAULT NULL,
-  `password` varchar(255) NOT NULL,
-  `email` varchar(254) NOT NULL,
-  `activation_selector` varchar(255) DEFAULT NULL,
-  `activation_code` varchar(255) DEFAULT NULL,
-  `forgotten_password_selector` varchar(255) DEFAULT NULL,
-  `forgotten_password_code` varchar(255) DEFAULT NULL,
-  `forgotten_password_time` int(11) UNSIGNED DEFAULT NULL,
-  `remember_selector` varchar(255) DEFAULT NULL,
-  `remember_code` varchar(255) DEFAULT NULL,
-  `created_on` int(11) UNSIGNED NOT NULL,
-  `last_login` int(11) UNSIGNED DEFAULT NULL,
-  `active` tinyint(1) UNSIGNED DEFAULT NULL,
-  `first_name` varchar(50) DEFAULT NULL,
-  `last_name` varchar(50) DEFAULT NULL,
-  `company` varchar(100) DEFAULT NULL,
-  `phone` varchar(20) DEFAULT NULL
+						 `id` int(11) UNSIGNED NOT NULL,
+						 `ip_address` varchar(45) NOT NULL,
+						 `username` varchar(100) DEFAULT NULL,
+						 `password` varchar(255) NOT NULL,
+						 `email` varchar(254) NOT NULL,
+						 `activation_selector` varchar(255) DEFAULT NULL,
+						 `activation_code`             varchar(255) DEFAULT NULL,
+						 `forgotten_password_selector` varchar(255) DEFAULT NULL,
+						 `forgotten_password_code`     varchar(255) DEFAULT NULL,
+						 `forgotten_password_time`     int(11) UNSIGNED DEFAULT NULL,
+						 `remember_selector`           varchar(255) DEFAULT NULL,
+						 `remember_code`               varchar(255) DEFAULT NULL,
+						 `created_on`                  int(11) UNSIGNED NOT NULL,
+						 `last_login`                  int(11) UNSIGNED DEFAULT NULL,
+						 `active`                      tinyint(1) UNSIGNED DEFAULT NULL,
+						 `first_name`                  varchar(50)  DEFAULT NULL,
+						 `last_name`                   varchar(50)  DEFAULT NULL,
+						 `company`                     varchar(100) DEFAULT NULL,
+						 `phone`                       varchar(20)  DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2y$10$C3ESQE4p6skAOwx2EBOVrOyG9tG6SOwLfYGUPmI/32GGD2ibL8rEO', 'admin@admin.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1700155556, 1, 'Admin', 'istrator', 'ADMIN', '0'),
-(2, '::1', 'mirav.bhojani@strathmore.edu', '$2y$10$AqUhmu.woT8VJCIjsmwnK.ZzWkZRxUwpUXA3hdL6aWzTOCmqgdf3m', 'mirav.bhojani@strathmore.edu', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1699607712, 1700145709, 1, 'Swamibapa', 'Club', 'Club', '0706784933'),
-(3, '::1', 'makuno.biz@gmail.com', '$2y$10$mJedSoMfNcwAaWnby.WT..r2W4IeG/T6hOWVdjTKMq6e1SvP5lD92', 'makuno.biz@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1700135820, 1700156390, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`,
+					 `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`,
+					 `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`,
+					 `last_name`, `company`, `phone`)
+VALUES (1, '127.0.0.1', 'administrator', '$2y$10$C3ESQE4p6skAOwx2EBOVrOyG9tG6SOwLfYGUPmI/32GGD2ibL8rEO',
+		'admin@admin.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1700545417, 1, 'Admin', 'istrator',
+		'ADMIN', '0');
 
 -- --------------------------------------------------------
 
@@ -325,21 +287,20 @@ INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activ
 -- Table structure for table `users_groups`
 --
 
-CREATE TABLE `users_groups` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `user_id` int(11) UNSIGNED NOT NULL,
-  `group_id` mediumint(8) UNSIGNED NOT NULL
+CREATE TABLE `users_groups`
+(
+	`id`       int(11) UNSIGNED NOT NULL,
+	`user_id`  int(11) UNSIGNED NOT NULL,
+	`group_id` mediumint(8) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `users_groups`
 --
 
-INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
-(1, 1, 1),
-(2, 1, 2),
-(6, 2, 3),
-(7, 3, 2);
+INSERT INTO `users_groups` (`id`, `user_id`, `group_id`)
+VALUES (1, 1, 1),
+	   (2, 1, 2);
 
 --
 -- Indexes for dumped tables
@@ -349,7 +310,7 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 -- Indexes for table `battingleaderboard`
 --
 ALTER TABLE `battingleaderboard`
-  ADD PRIMARY KEY (`id`);
+	ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `bowlingreport`
@@ -450,49 +411,49 @@ ALTER TABLE `battingleaderboard`
 -- AUTO_INCREMENT for table `bowlingreport`
 --
 ALTER TABLE `bowlingreport`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+	MODIFY `id` int (11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `clubs`
 --
 ALTER TABLE `clubs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+	MODIFY `id` int (11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+	MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `login_attempts`
 --
 ALTER TABLE `login_attempts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+	MODIFY `id` int (11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `matches`
 --
 ALTER TABLE `matches`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+	MODIFY `id` int (11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `match_players`
 --
 ALTER TABLE `match_players`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+	MODIFY `id` int (11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `players`
 --
 ALTER TABLE `players`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+	MODIFY `id` int (11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `s1`
 --
 ALTER TABLE `s1`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+	MODIFY `id` int (11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `s2`
@@ -510,19 +471,19 @@ ALTER TABLE `s3`
 -- AUTO_INCREMENT for table `s4`
 --
 ALTER TABLE `s4`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+	MODIFY `id` int (11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+	MODIFY `id` int (11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users_groups`
 --
 ALTER TABLE `users_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+	MODIFY `id` int (11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
@@ -532,7 +493,7 @@ ALTER TABLE `users_groups`
 -- Constraints for table `users_groups`
 --
 ALTER TABLE `users_groups`
-  ADD CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+	ADD CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 COMMIT;
 

@@ -41,7 +41,8 @@
 	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="<?php echo base_url('Welcome/admin'); ?>">Admin Panel</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+					aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarCollapse">
@@ -50,7 +51,7 @@
 						<a class="nav-link active" aria-current="page" href="<?php echo base_url('Welcome/admin'); ?>">Home</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="<?php echo base_url('Welcome/create_club'); ?>">Create Club</a>
+						<a class="nav-link" href="<?php echo base_url('Welcome/create_club/create'); ?>">Create Club</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="<?php echo base_url('Welcome/clubs'); ?>">Clubs</a>
